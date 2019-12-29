@@ -1,26 +1,35 @@
 import socket
-import time
-import server_socket
+import threading
+PORT = 10001
 
-if __name__ == '__main__':
-    host = ''
-    port = 2022
 
-    print("Server Connecting")
-    client_socket, addr = server_socket.accept()
-    print('Connectd by', addr)
+def listen_socket(sck):
     while True:
-        data = client_socket.recv()
+        msg = sck.recv(1024)
+        if msg.decode() == 'exit':
+            break
+        print(msg.decode())
 
-        if not data:
+
+def send_socket(sck):
+    while True:
+        msg = input()
+        sck.send(msg.encode('utf-8'))
+        if msg == 'exit':
             break
 
-        if data == "":
-            start_position = data
-        #shortest path algorithm
-        
-        #client_socket.sendall(data)
 
+if __name__ == '__main__':
 
+    # To send the message on server
+    # Information about current location,
+    send_sck = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    send_sck.connect(('127.0.0.1', PORT))
+    send_thread = threading.Thread(target=send_socket, args=(send_sck, ))
+    get_thread = threading.Thread(target=listen_socket, args=(send_sck, ))
+    send_thread.start()
+    get_thread.start()
 
-
+    # Wait until both threads are terminated. Then close.
+    send_thread.join()
+    get_thread.join()
