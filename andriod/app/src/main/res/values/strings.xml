@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">posla</string>
+    <string name="action_settings">Settings</string>
+    <string name="stopText">작동중지</string>
+    <string name="startText">작동시작</string>
+    <string name="a"><![CDATA[<]]></string>
+    <string name="d"><![CDATA[>]]></string>
+    <string name="s">v</string>
+    <string name="w">^</string>
+</resources>
